@@ -1,5 +1,6 @@
 # FancyDesigns
 #### this project is done only for learning prepossess 
+#### another Note: the first screen in each (Animation screens (Pizza screens) & Blured style screens) they should have been implemented over a scrollView but for the sake of learning the new animations and effects i did not do that to give more attention to the main things that i want to do.
 the project contains 3 parts 
 
 ![alt text](https://github.com/Zeglaty/FancyDesigns/blob/master/ScreenShots/Screen%20Shot%201.png)![alt text](https://github.com/Zeglaty/FancyDesigns/blob/master/CellColorPhotoBased/Assets.xcassets/fin.imageset/fin.png)
@@ -35,3 +36,4 @@ https://www.hackingwithswift.com/example-code/media/how-to-record-audio-using-av
 https://www.hackingwithswift.com/example-code/media/how-to-play-sounds-using-avaudioplayer
 
 ![alt text](https://github.com/Zeglaty/FancyDesigns/blob/master/ScreenShots/Screen%20Shot%204.png)
+
