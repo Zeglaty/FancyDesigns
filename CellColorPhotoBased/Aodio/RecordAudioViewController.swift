@@ -16,9 +16,13 @@ class RecordAudioViewController: UIViewController {
         
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
-        
-    @IBOutlet weak var recordButton: UIButton!
     
+    var counter = 0.0
+    var timer = Timer()
+    var isPlaying = false
+        
+    @IBOutlet weak var timerCountLabel: UILabel!
+    @IBOutlet weak var recordButton: UIButton!
     
     var audioPlayer = AVAudioPlayer()
     @IBOutlet weak var playButton: UIButton!
@@ -34,6 +38,13 @@ class RecordAudioViewController: UIViewController {
             
             loadActions(.didLoad)
             setupViewStyle()
+            
+            if (self.navigationController != nil){
+                print("navControler")
+            }else{
+                print("nil")
+            }
+            
         }
         
         // override func viewDidAppear
@@ -51,16 +62,19 @@ class RecordAudioViewController: UIViewController {
     
     @IBAction func play(_ sender: Any) {
         audioPlayer.play()
+        
     }
     
     @IBAction func share(_ sender: Any) {
-        
        loadAudioAndShare()
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MARK: - Methods
-        
+
+    
+    
+    // MARK: - 1 Record Sys Methods
     func startRecording() {
         let audioFilename = getDocumentsDirectory().appendingPathComponent("recording.m4a")
 
@@ -77,6 +91,8 @@ class RecordAudioViewController: UIViewController {
             audioRecorder.record()
 
             recordButton.setTitle("Tap to Stop", for: .normal)
+            resetTimer()
+            startTimer()
         } catch {
             finishRecording(success: false)
         }
@@ -88,14 +104,18 @@ class RecordAudioViewController: UIViewController {
 
         if success {
             recordButton.setTitle("Tap to Re-record", for: .normal)
+            pauseTimer()
+            
         } else {
             recordButton.setTitle("Tap to Record", for: .normal)
+            resetTimer()
             // recording failed :(
         }
         
         setUpPlaySystem()
     }
 //--------------
+    // MARK: - 2 Share Methods
     func loadAudioAndShare(){
 
        
@@ -116,6 +136,39 @@ class RecordAudioViewController: UIViewController {
         }
     }
     
+//---------------
+// MARK: - 3 Timer System Methods
+    func startTimer(){
+        if(isPlaying) {
+            return
+        }
+        
+            
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(UpdateTimer), userInfo: nil, repeats: true)
+        isPlaying = true
+    }
+//--------------
+    func pauseTimer() {
+        
+        timer.invalidate()
+        isPlaying = false
+    }
+    
+//--------------
+    func resetTimer() {
+        
+            
+        timer.invalidate()
+        isPlaying = false
+        counter = 0.0
+        timerCountLabel.text = String(counter)
+    }
+    
+//--------------
+    @objc func UpdateTimer() {
+        counter = counter + 0.1
+        timerCountLabel.text = String(format: "%.1f", counter)
+    }
 //---------------
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -151,6 +204,8 @@ class RecordAudioViewController: UIViewController {
             
             setUpRecordingSystem()
 //            setUpPlaySystem()
+            
+            timerCountLabel.text = String(counter)
             
         case .didAppear:
             break
